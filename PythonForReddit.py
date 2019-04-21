@@ -35,7 +35,7 @@ class Option(Enum):
     SearchSub = 4
     Top10 = 5
     SearchUser = 6
-    Quit = 10
+    Quit = 9
 
 class Color(Enum):
     Red = 1
@@ -94,7 +94,7 @@ def PrintSub(SubName):
 def ViewPostAndComments(SubList1, SubList2):
     var = input("View top 10 hottest posts? (Y/N)")
 
-    if var == "Y":
+    if var.upper() == "Y":
         i = 1
         for submission in SubList1:
             ViewTop10(submission, i)
@@ -162,7 +162,7 @@ def ViewUserStats(Name):
 
     var = input("View newest 10 comments? (Y/N)")
         
-    if var == "Y":
+    if var.upper() == "Y":
         for comment in redditor_obj.comments.new(limit=10):
             print("--------------------------------------------------------------------------")
             print("Upvotes         : %d Downvotes: %d, Controversiality: %d" % (comment.ups, comment.downs, comment.controversiality))
@@ -205,7 +205,7 @@ while(True):
     print(" 4. Search sub.")
     print(" 5. Top hot posts.")
     print(" 6. Search for user.")
-    print("10. Quit.")
+    print(" 9. Quit.")
     print("--------------------------------------------------------------------------")
     var = input("Your choice: ")
 
