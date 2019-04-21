@@ -160,7 +160,7 @@ def ViewUserStats(Name):
             print("Comment         : %s" % comment.body)
             print("Permalink       : %s" % comment.permalink)
 
-doc = xml.dom.minidom.parse("PythonForReddit/Credentials.xml")
+doc = xml.dom.minidom.parse("Credentials.xml")
 
 def ReadXML(nodename):
     return doc.getElementsByTagName(nodename)[0].firstChild.data
@@ -234,8 +234,8 @@ while(True):
             break
         elif var == Option.Top10.value: 
             i = 1
+            ClearWOMessage();
             for submission in reddit.front.hot(limit=10):
-                ClearWOMessage();
                 ViewTop10(submission, i)
                 i += 1
         else:
