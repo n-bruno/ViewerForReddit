@@ -84,53 +84,62 @@ def PrintSub(SubName):
                 print("Advertiser category    : %s" % subobj.advertiser_category)
                 print("Over 18                : %s" % subobj.over18)
 
-                var = input("View top 10 hottest posts? (Y/N)")
-        
-                if var == "Y":
-                    i = 1
-                    for submission in reddit.subreddit(SubName).hot(limit=10):
-                       ViewTop10(submission, i)
-                       i += 1
-                else:
+                if ViewPostAndComments(reddit.subreddit(SubName).hot(limit=10), reddit.subreddit(SubName).hot(limit=10)) == False:
                     break;
-                var = input("Enter number for the comments to view.")
-
-                i = 1
-                if var.isdigit() and int(var) <= 10 and int(var) >= 0:
-                    GetToHere = int(var)
-                    for submission in reddit.subreddit(SubName).hot(limit=10):
-                        if (i == GetToHere):
-                            ClearWOMessage();
-                            ViewTop10(submission, i)
-                            for Comment in submission.comments:
-                                PrintComment(Comment)
-                        i += 1
-                else:
-                    break;
-                Clear();
         except Exception as e:
-            print("Name : %s" % str(e));
+            print("Error : %s" % str(e));
     else:
         print("Sub cannot be empty.");
 
+def ViewPostAndComments(SubList1, SubList2):
+    var = input("View top 10 hottest posts? (Y/N)")
+
+    if var == "Y":
+        i = 1
+        for submission in SubList1:
+            ViewTop10(submission, i)
+            i += 1
+    else:
+        return False;
+    var = input("Enter number for the comments to view.")
+
+    i = 1
+    if var.isdigit() and int(var) <= 10 and int(var) >= 0:
+        GetToHere = int(var)
+        for submission in SubList2:
+            if (i == GetToHere):
+                ClearWOMessage();
+                ViewTop10(submission, i)
+                for Comment in submission.comments:
+                    PrintComment(Comment)
+            i += 1
+    else:
+        return False;
+    Clear();
+    return True;
+
+
 #https://www.2daygeek.com/rtv-reddit-terminal-viewer-a-simple-terminal-viewer-for-reddit/
 def PrintComment(Comment, indent=""):
-    print("")
+    try:
+        print("")
 
-    if (Comment.author == None):
-        name = "[deleted]"
-    else:
-       name = Comment.author.name
+        if (Comment.author == None):
+            name = "[deleted]"
+        else:
+           name = Comment.author.name
 
-    print(hilite("%s%s" % (indent, name), Color.Blue))
-    print("%sScore: %d Upvotes: %d Downvotes: %d Controversiality: %d" % (indent, Comment.score, Comment.ups, Comment.downs, Comment.controversiality))
-    print("%sMessage          : %s" % (indent, Comment.body))
-    print("%sPostdate         : %s" % (indent,datetime.datetime.fromtimestamp(Comment.created_utc)))
-    print("%sPermalink        : %s" % (indent,Comment.permalink))
+        print(hilite("%s%s" % (indent, name), Color.Blue))
+        print("%sScore: %d Upvotes: %d Downvotes: %d Controversiality: %d" % (indent, Comment.score, Comment.ups, Comment.downs, Comment.controversiality))
+        print("%sMessage          : %s" % (indent, Comment.body))
+        print("%sPostdate         : %s" % (indent,datetime.datetime.fromtimestamp(Comment.created_utc)))
+        print("%sPermalink        : %s" % (indent,Comment.permalink))
 
-    for Replies in Comment.replies:
-        indent += "    "
-        PrintComment(Replies, indent)
+        for Replies in Comment.replies:
+            indent += "    "
+            PrintComment(Replies, indent)
+    except Exception as e:
+        print("Error: %s" % str(e));
 
 def ViewTop10(submission, i):
     print("")
@@ -233,11 +242,11 @@ while(True):
             print("You chose to quit with the '%d' option." % var)
             break
         elif var == Option.Top10.value: 
-            i = 1
             ClearWOMessage();
-            for submission in reddit.front.hot(limit=10):
-                ViewTop10(submission, i)
-                i += 1
+            while(ViewPostAndComments(reddit.front.hot(limit=10), reddit.front.hot(limit=10)) == True):
+                no_op = 0
+            
+
         else:
             print("Invalid entry number.")
     else:
