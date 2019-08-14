@@ -1,7 +1,7 @@
 # ViewerForReddit
 
 ## About
-This program allows you to view Reddit with a Python script. I used a Reddit API, SCRAW. Enter your API information in "Credentials.xml".
+This program allows you to view Reddit with a Python script. I used the Reddit API, SCRAW. Enter your API information in "Credentials.xml".
 
 ## Credentials
 Please format "Credentials.xml" as the following:
